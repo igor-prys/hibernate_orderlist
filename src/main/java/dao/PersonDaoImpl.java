@@ -4,6 +4,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import pojo.Order;
 import pojo.Person;
+import pojo.Product;
 
 import java.util.List;
 
@@ -46,20 +47,15 @@ public class PersonDaoImpl implements PersonDao {
     public void delete(Long id) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            Person person = session.get(Person.class, id);
-            person.setId(id);
-            session.remove(person);
-            session.getTransaction().commit();
-        }
-    }
-
-    public void dell(Long id) {
-        try (Session session = sessionFactory.openSession()) {
-            session.beginTransaction();
             Person person=session.get(Person.class,id);
             List<Order>orders=person.getOrderList();
             for(int i=0;i<orders.size();i++){
                 Order order=person.getOrderList().get(i);
+                for(int j=0;j<order.getProductList().size();j++){
+                    Product product=order.getProductList().get(j);
+                    session.remove(product);
+                }
+
                 session.remove(order);
             }
             session.remove(person);

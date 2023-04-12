@@ -49,11 +49,11 @@ public class App {
 //            session.persist(goshaOrder);
 //            session.getTransaction().commit();
 //        }
-//        PersonDaoImpl pdi=new PersonDaoImpl();
-//        pdi.dell(1L);
+        PersonDaoImpl pdi=new PersonDaoImpl();
+        pdi.delete(1L);
 //        OrderDaoImpl odi=new OrderDaoImpl();
 //        odi.delete(2L);
-        ProductDaoImpl productDao=new ProductDaoImpl();
-        productDao.delete(8L);
+//        ProductDaoImpl productDao=new ProductDaoImpl();
+//        productDao.delete(8L);
     }
 }
