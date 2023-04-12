@@ -10,6 +10,7 @@ import java.util.List;
 
 public class PersonDaoImpl implements PersonDao {
     private SessionFactory sessionFactory = SessionFactoryCreator.getInstance().getSessionFactory();
+    private OrderDao orderDao=new OrderDaoImpl();
 
     @Override
     public void add(Person person) {
@@ -44,22 +45,37 @@ public class PersonDaoImpl implements PersonDao {
     }
 
     @Override
-    public void delete(Long id) {
-        try (Session session = sessionFactory.openSession()) {
+//    public void delete(Long id) {
+//        try (Session session = sessionFactory.openSession()) {
+//            session.beginTransaction();
+//            Person person=session.get(Person.class,id);
+//            List<Order>orders=person.getOrderList();
+//            for(int i=0;i<orders.size();i++){
+//                Order order=person.getOrderList().get(i);
+//                for(int j=0;j<order.getProductList().size();j++){
+//                    Product product=order.getProductList().get(j);
+//                    session.remove(product);
+//                }
+//
+//                session.remove(order);
+//            }
+//            session.remove(person);
+//            session.getTransaction().commit();
+//        }
+//    }
+    public boolean delete(Long id){
+        try(Session session=sessionFactory.openSession()){
             session.beginTransaction();
             Person person=session.get(Person.class,id);
-            List<Order>orders=person.getOrderList();
-            for(int i=0;i<orders.size();i++){
-                Order order=person.getOrderList().get(i);
-                for(int j=0;j<order.getProductList().size();j++){
-                    Product product=order.getProductList().get(j);
-                    session.remove(product);
-                }
-
-                session.remove(order);
+            for(int i=0;i<person.getOrderList().size();i++){
+              orderDao.delete(person.getOrderList().get(i).getId());
             }
             session.remove(person);
             session.getTransaction().commit();
+            return true;
+        }
+        catch (Exception e){
+            return false;
         }
     }
 }

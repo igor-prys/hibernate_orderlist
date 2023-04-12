@@ -9,6 +9,6 @@ public interface PersonDao {
     Person find(Long id);
     List<Person> findAll();
     void update(Person person);
-    void delete(Long id);
+    boolean delete(Long id);
 
 }
