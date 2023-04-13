@@ -40,21 +40,22 @@ public class App {
                 .addAnnotatedClass(Order.class)
                 .buildSessionFactory();
 
-//        try (Session session = sf.openSession()) {
-//            session.beginTransaction();
-//            session.persist(gosha);
-//            session.persist(cake);
-//            session.persist(funnyTrain);
-//            session.persist(soap);
-//            session.persist(goshaOrder);
-//            session.getTransaction().commit();
-//        }
-        PersonDaoImpl pdi = new PersonDaoImpl();
-        pdi.delete(2L);
+        try (Session session = sf.openSession()) {
+            session.beginTransaction();
+            session.persist(gosha);
+            session.persist(cake);
+            session.persist(funnyTrain);
+            session.persist(soap);
+            session.persist(goshaOrder);
+            session.getTransaction().commit();
+        }
+//        PersonDaoImpl pdi = new PersonDaoImpl();
+//        pdi.delete(2L);
 //        pdi.delete(1L);
 //        OrderDaoImpl odi=new OrderDaoImpl();
 //        odi.delete(2L);
-//        ProductDaoImpl productDao=new ProductDaoImpl();
+        ProductDaoImpl productDao=new ProductDaoImpl();
+        System.out.println(productDao.productCostMore());
 //        productDao.delete(8L);
     }
 }

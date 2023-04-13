@@ -5,11 +5,12 @@ import org.hibernate.SessionFactory;
 import pojo.Order;
 import pojo.Product;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class ProductDaoImpl implements ProductDao {
 
-    private SessionFactory sessionFactory = SessionFactoryCreator.getInstance().getSessionFactory();
+    private final SessionFactory sessionFactory = SessionFactoryCreator.getInstance().getSessionFactory();
 
     @Override
     public void add(Product product) {
@@ -50,6 +51,12 @@ public class ProductDaoImpl implements ProductDao {
             Product product = session.get(Product.class, id);
             session.remove(product);
             session.getTransaction().commit();
+        }
+    }
+
+    public List<Product> productCostMore() {
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("select p from Product p where p.price>10.0",Product.class).list();
         }
     }
 }
