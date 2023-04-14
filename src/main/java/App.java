@@ -1,9 +1,10 @@
 
 
-import dao.OrderDaoImpl;
-import dao.PersonDaoImpl;
-import dao.ProductDaoImpl;
-import dao.SessionFactoryCreator;
+import dao.PersonDao;
+import dao.ProductDao;
+import dao.orm.PersonDaoImpl;
+import dao.orm.ProductDaoImpl;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -13,7 +14,6 @@ import pojo.Product;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 public class App {
@@ -39,23 +39,39 @@ public class App {
                 .addAnnotatedClass(Product.class)
                 .addAnnotatedClass(Order.class)
                 .buildSessionFactory();
+//        try (Session session = sf.openSession()) {
+//            session.beginTransaction();
+//            session.persist(gosha);
+//            session.persist(cake);
+//            session.persist(funnyTrain);
+//            session.persist(soap);
+//            session.persist(goshaOrder);
+//            session.getTransaction().commit();
+//        }
+        PersonDaoImpl pdi = new PersonDaoImpl();
+        List<Person>personList=pdi.findAllWithOrders();
 
-        try (Session session = sf.openSession()) {
-            session.beginTransaction();
-            session.persist(gosha);
-            session.persist(cake);
-            session.persist(funnyTrain);
-            session.persist(soap);
-            session.persist(goshaOrder);
-            session.getTransaction().commit();
-        }
-//        PersonDaoImpl pdi = new PersonDaoImpl();
+        System.out.println(personList.get(0).getOrderList().get(0));
+
+
+//        try(Session session=sf.openSession()){
+//            session.beginTransaction();
+//            session.merge(person);
+//            Order order=person.getOrderList().get(0);
+//            System.out.println(order);
+//            session.getTransaction().commit();
+//        }
+//        System.out.println(result);
+//        Order order=result.get(1).getOrderList().get(0);
+//        System.out.println(order);
+
 //        pdi.delete(2L);
 //        pdi.delete(1L);
 //        OrderDaoImpl odi=new OrderDaoImpl();
 //        odi.delete(2L);
-        ProductDaoImpl productDao=new ProductDaoImpl();
-        System.out.println(productDao.productCostMore());
+//        ProductDao productDao = new ProductDaoImpl();
+//        System.out.println(productDao.find(7L));
+//        System.out.println(productDao.productCostMore());
 //        productDao.delete(8L);
     }
 }

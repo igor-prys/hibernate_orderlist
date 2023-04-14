@@ -1,62 +1,62 @@
-package dao;
+package dao.orm;
 
+import dao.OrderDao;
+import dao.ProductDao;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import pojo.Order;
-import pojo.Product;
 
-import java.math.BigDecimal;
 import java.util.List;
 
-public class ProductDaoImpl implements ProductDao {
-
+public class OrderDaoImpl implements OrderDao {
     private final SessionFactory sessionFactory = SessionFactoryCreator.getInstance().getSessionFactory();
+    private final ProductDao productDao = new ProductDaoImpl();
 
     @Override
-    public void add(Product product) {
+    public void add(Order order) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            session.persist(product);
+            session.persist(order);
             session.getTransaction().commit();
         }
     }
 
     @Override
-    public Product find(Long id) {
+    public Order find(Long id) {
         try (Session session = sessionFactory.openSession()) {
-            return session.get(Product.class, id);
+            return session.get(Order.class, id);
         }
     }
 
     @Override
-    public List<Product> findAll() {
+    public List<Order> findAll() {
         try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("select p from Product p", Product.class).list();
+            return session.createQuery("select o from Order o", Order.class).list();
         }
     }
 
     @Override
-    public void update(Product product) {
+    public void update(Order order) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            session.merge(product);
+            session.merge(order);
             session.getTransaction().commit();
         }
     }
 
     @Override
-    public void delete(Long id) {
+    public boolean delete(Long id) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            Product product = session.get(Product.class, id);
-            session.remove(product);
+            Order order = session.get(Order.class, id);
+            for (int i = 0; i < order.getProductList().size(); i++) {
+                productDao.delete(order.getProductList().get(i).getId());
+            }
+            session.remove(order);
             session.getTransaction().commit();
-        }
-    }
-
-    public List<Product> productCostMore() {
-        try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("select p from Product p where p.price>10.0",Product.class).list();
+            return true;
+        } catch (Exception e) {
+            return false;
         }
     }
 }
