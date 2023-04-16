@@ -13,7 +13,7 @@ public class OrderDaoImpl implements OrderDao {
     private final ProductDao productDao = new ProductDaoImpl();
 
     @Override
-    public void add(Order order) {
+    public void create(Order order) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             session.persist(order);

@@ -39,39 +39,12 @@ public class App {
                 .addAnnotatedClass(Product.class)
                 .addAnnotatedClass(Order.class)
                 .buildSessionFactory();
-//        try (Session session = sf.openSession()) {
-//            session.beginTransaction();
-//            session.persist(gosha);
-//            session.persist(cake);
-//            session.persist(funnyTrain);
-//            session.persist(soap);
-//            session.persist(goshaOrder);
-//            session.getTransaction().commit();
-//        }
-        PersonDaoImpl pdi = new PersonDaoImpl();
-        List<Person>personList=pdi.findAllWithOrders();
 
+        PersonDao pdi = new PersonDaoImpl();
+        List<Person> personList = pdi.findAllWithOrders();
         System.out.println(personList.get(0).getOrderList().get(0));
+        System.out.println(pdi.findByIdWithOrders(3L));
 
-
-//        try(Session session=sf.openSession()){
-//            session.beginTransaction();
-//            session.merge(person);
-//            Order order=person.getOrderList().get(0);
-//            System.out.println(order);
-//            session.getTransaction().commit();
-//        }
-//        System.out.println(result);
-//        Order order=result.get(1).getOrderList().get(0);
-//        System.out.println(order);
-
-//        pdi.delete(2L);
-//        pdi.delete(1L);
-//        OrderDaoImpl odi=new OrderDaoImpl();
-//        odi.delete(2L);
-//        ProductDao productDao = new ProductDaoImpl();
-//        System.out.println(productDao.find(7L));
-//        System.out.println(productDao.productCostMore());
-//        productDao.delete(8L);
     }
+
 }

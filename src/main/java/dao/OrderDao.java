@@ -6,7 +6,7 @@ import pojo.Order;
 import java.util.List;
 
 public interface OrderDao {
-    void add(Order order);
+    void create(Order order);
 
     Order find(Long id);
 

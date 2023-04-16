@@ -5,7 +5,7 @@ import pojo.Product;
 import java.util.List;
 
 public interface ProductDao {
-    void add(Product product);
+    void create(Product product);
     Product find(Long id);
     List<Product> findAll();
     void update(Product product);

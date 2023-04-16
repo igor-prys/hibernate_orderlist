@@ -13,7 +13,7 @@ public class PersonDaoImpl implements PersonDao {
     private final OrderDao orderDao = new OrderDaoImpl();
 
     @Override
-    public void add(Person person) {
+    public void create(Person person) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             session.persist(person);
@@ -24,9 +24,13 @@ public class PersonDaoImpl implements PersonDao {
     @Override
     public Person find(Long id) {
         try (Session session = sessionFactory.openSession()) {
-            Person p = session.get(Person.class, id);
-            // p.getOrderList().get(0);
-            return p;
+            return session.get(Person.class, id);
+        }
+    }
+    public Person findByIdWithOrders(Long id){
+        try(Session session=sessionFactory.openSession()){
+            return session.createQuery("from Person p join fetch p.orderList where p.id=:id",Person.class)
+                    .setParameter("id",id).uniqueResult();
         }
     }
 

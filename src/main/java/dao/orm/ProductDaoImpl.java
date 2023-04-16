@@ -12,7 +12,7 @@ public class ProductDaoImpl implements ProductDao {
     private final SessionFactory sessionFactory = SessionFactoryCreator.getInstance().getSessionFactory();
 
     @Override
-    public void add(Product product) {
+    public void create(Product product) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             session.persist(product);
