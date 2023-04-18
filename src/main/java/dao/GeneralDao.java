@@ -11,5 +11,5 @@ public interface GeneralDao<T> {
 
     void update(T t);
 
-    boolean delete(Long id);
+    void delete(Long id);
 }

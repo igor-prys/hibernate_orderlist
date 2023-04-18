@@ -10,7 +10,6 @@ import java.util.List;
 
 public class OrderDaoImpl implements OrderDao {
     private final SessionFactory sessionFactory = SessionFactoryCreator.getInstance().getSessionFactory();
-    private final ProductDao productDao = new ProductDaoImpl();
 
     @Override
     public void create(Order order) {
@@ -45,18 +44,13 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public boolean delete(Long id) {
+    public void delete(Long id) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            Order order = session.get(Order.class, id);
-            for (int i = 0; i < order.getProductList().size(); i++) {
-                productDao.delete(order.getProductList().get(i).getId());
-            }
+            Order order=new Order();
+            order.setId(id);
             session.remove(order);
             session.getTransaction().commit();
-            return true;
-        } catch (Exception e) {
-            return false;
         }
     }
     public Order findOrderWithProduct(Long id){

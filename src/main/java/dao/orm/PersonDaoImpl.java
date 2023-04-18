@@ -59,7 +59,7 @@ public class PersonDaoImpl implements PersonDao {
     }
 
     @Override
-    public boolean delete(Long id) {
+    public void delete(Long id) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             Person person = session.get(Person.class, id);
@@ -68,9 +68,6 @@ public class PersonDaoImpl implements PersonDao {
             }
             session.remove(person);
             session.getTransaction().commit();
-            return true;
-        } catch (Exception e) {
-            return false;
         }
     }
 }
