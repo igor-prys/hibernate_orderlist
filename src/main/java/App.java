@@ -1,7 +1,9 @@
 
 
+import dao.OrderDao;
 import dao.PersonDao;
 import dao.ProductDao;
+import dao.orm.OrderDaoImpl;
 import dao.orm.PersonDaoImpl;
 import dao.orm.ProductDaoImpl;
 import org.hibernate.Hibernate;
@@ -40,11 +42,24 @@ public class App {
                 .addAnnotatedClass(Order.class)
                 .buildSessionFactory();
 
-        PersonDao pdi = new PersonDaoImpl();
-        List<Person> personList = pdi.findAllWithOrders();
-        System.out.println(personList.get(0).getOrderList().get(0));
-        System.out.println(pdi.findByIdWithOrders(3L));
+//        PersonDao pdi = new PersonDaoImpl();
+//        List<Person> personList = pdi.findAllWithOrders();
+//        System.out.println(personList.get(0).getOrderList().get(0));
+//        System.out.println(pdi.findByIdWithOrders(3L));
 
+        PersonDao pdi = new PersonDaoImpl();
+        Person p = pdi.find(2L);
+        System.out.println(p);
+//        try (Session session = sf.openSession()) {
+//            session.beginTransaction();
+//           p=  session.merge(p);
+//            p.setFirstname("YYYYYYY");
+//          //  p.setId(100L);
+//           // System.out.println(p.getOrderList());
+//            session.getTransaction().commit();
+//        }
+        OrderDao odi=new OrderDaoImpl();
+        System.out.println(odi.findOrderWithProduct(3L).getProductList());
     }
 
 }

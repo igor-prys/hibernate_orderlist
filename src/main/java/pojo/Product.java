@@ -24,6 +24,15 @@ public class Product {
     @JoinColumn(name = "order_id")
     private Order order;
 
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", type=" + type +
+                '}';
+    }
 
     public enum Type{
         DISH, TOY, COSMETIC, FOOD

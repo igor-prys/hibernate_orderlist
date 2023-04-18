@@ -59,4 +59,10 @@ public class OrderDaoImpl implements OrderDao {
             return false;
         }
     }
+    public Order findOrderWithProduct(Long id){
+        try(Session session=sessionFactory.openSession()){
+            return session.createQuery("select o from Order o join fetch o.productList where o.id=:id",Order.class)
+                    .setParameter("id",id).uniqueResult();
+        }
+    }
 }
